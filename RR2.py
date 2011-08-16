@@ -4,7 +4,7 @@ import modelLoader
 import gameMain
 import stratCam
 import fpsTest
-import something4
+#import something4
 
 parserClass = Parser.Parser()
 
