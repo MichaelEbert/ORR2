@@ -129,15 +129,13 @@ class CameraHandler(DirectObject.DirectObject):
 		
 	def rayupdate(self, task):
 		if base.mouseWatcherNode.hasMouse():
-			self.entries = []
-			for i in range(self.collisionHandler2.getNumEntries()):
-				entry = self.collisionHandler2.getEntry(i)
-				self.entries.append(entry)
-			self.entries.sort(lambda x,y: cmp(y.getSurfacePoint(render).getZ(),
-									 x.getSurfacePoint(render).getZ()))	
-			
+			self.entry=0
+			self.collisionHandler2.sortEntries()
+			if self.collisionHandler2.getNumEntries()>0:
+                                self.entry=self.collisionHandler2.getEntry(0)			
 			mpos=base.mouseWatcherNode.getMouse()
-			# this function will set our ray to shoot from the actual camera lenses off the 3d scene, passing by the mouse pointer position, making  magically hit what is pointed by it in the 3d space
+			# this function will set our ray to shoot from the actual camera lenses off the 3d scene, passing by the mouse pointer position,
+			# making  magically hit what is pointed by it in the 3d space
 			self.pickerRay.setFromLens(base.camNode, mpos.getX(),mpos.getY())
 		return task.cont
 		
@@ -146,9 +144,9 @@ class CameraHandler(DirectObject.DirectObject):
 			mainClass.mineWall(mapLoaderClass.tileArray[self.tileSelected[1]][self.tileSelected[0]], parserClass, modelLoaderClass, mapLoaderClass)
 			
 	def mouseClick(self, mapLoaderClass):
-		if (len(self.entries)>0):
-			x = int(self.entries[0].getIntoNode().getName()[len(self.entries[0].getIntoNode().getName())-6:len(self.entries[0].getIntoNode().getName())-4])
-			y = int(self.entries[0].getIntoNode().getName()[len(self.entries[0].getIntoNode().getName())-2:])
+		if (self.entry!=0):
+			x = int(self.entry.getIntoNode().getName()[len(self.entry.getIntoNode().getName())-6:len(self.entry.getIntoNode().getName())-4])
+			y = int(self.entry.getIntoNode().getName()[len(self.entry.getIntoNode().getName())-2:])
 			
 
 			if (mapLoaderClass.tileArray[y][x].selectable == True):
